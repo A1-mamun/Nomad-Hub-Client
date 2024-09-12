@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
 const CategoryBox = ({ label, icon: Icon }) => {
   return (
@@ -10,19 +10,19 @@ const CategoryBox = ({ label, icon: Icon }) => {
   gap-2
   p-3
   border-b-2
-  hover:text-neutral-800
+  hover:text-neutral-500
   transition
   cursor-pointer`}
     >
       <Icon size={26} />
-      <div className='text-sm font-medium'>{label}</div>
+      <div className="text-sm font-medium">{label}</div>
     </div>
-  )
-}
+  );
+};
 
 CategoryBox.propTypes = {
   label: PropTypes.string,
   icon: PropTypes.elementType,
-}
+};
 
-export default CategoryBox
+export default CategoryBox;
