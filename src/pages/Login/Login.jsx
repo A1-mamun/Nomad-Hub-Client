@@ -1,16 +1,46 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import { ImSpinner6 } from "react-icons/im";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [userLoading, setUserLoading] = useState(false);
+
   const { signIn, signInWithGoogle, loading, setLoading } = useAuth();
+
+  // sign in
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    try {
+      setUserLoading(true);
+
+      // Sign in
+      await signIn(email, password);
+
+      navigate(location?.state ? location.state : "/");
+
+      toast.success("SignIn successfully");
+      setUserLoading(false);
+    } catch (err) {
+      toast.error(err.message);
+      setUserLoading(false);
+    }
+  };
+
   // google sign in
-  const handleGoogleSignIn = async (e) => {
+  const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
-      navigate("/");
+      navigate(location?.state ? location.state : "/");
+
       toast.success("SignIn successfully");
     } catch (err) {
       toast.error(err.message);
@@ -27,8 +57,7 @@ const Login = () => {
           </p>
         </div>
         <form
-          noValidate=""
-          action=""
+          onSubmit={handleSubmit}
           className="space-y-6 ng-untouched ng-pristine ng-valid"
         >
           <div className="space-y-4">
@@ -66,10 +95,15 @@ const Login = () => {
 
           <div>
             <button
+              disabled={userLoading}
               type="submit"
               className="bg-rose-500 w-full rounded-md py-3 text-white"
             >
-              Continue
+              {userLoading ? (
+                <ImSpinner6 className="animate-spin mx-auto" />
+              ) : (
+                "Continue"
+              )}
             </button>
           </div>
         </form>

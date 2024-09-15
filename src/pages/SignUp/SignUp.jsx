@@ -56,7 +56,7 @@ const SignUp = () => {
   };
 
   // google sign in
-  const handleGoogleSignIn = async (e) => {
+  const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
       navigate("/");
