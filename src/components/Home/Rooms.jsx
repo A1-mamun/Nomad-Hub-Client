@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Card from "./Card";
 import Container from "../Shared/Container";
 import Heading from "../Shared/Heading";
@@ -11,6 +10,7 @@ const Rooms = () => {
   const axiosCommon = useAxiosCommon();
   const [params, setParams] = useSearchParams();
   const category = params.get("category");
+
   // console.log(category);
   const { data: rooms = [], isLoading } = useQuery({
     queryKey: ["rooms", category],
