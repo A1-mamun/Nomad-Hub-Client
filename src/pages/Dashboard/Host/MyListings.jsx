@@ -1,19 +1,14 @@
 import { Helmet } from "react-helmet-async";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
 import RoomDataRow from "../../../components/Dashboard/TableRows/RoomDataRow";
-import { useState } from "react";
+import toast from "react-hot-toast";
 
 const MyListings = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
-
-  function close() {
-    setIsOpen(false);
-  }
 
   // fetch rooms data
   const {
@@ -29,9 +24,26 @@ const MyListings = () => {
     },
   });
 
+  // delete
+  const { mutateAsync } = useMutation({
+    mutationFn: async (id) => {
+      const { data } = await axiosSecure.delete(`/delete-room/${id}`);
+      return data;
+    },
+    onSuccess: () => {
+      refetch();
+      toast.success("Room deleted successfully");
+    },
+  });
+
   // handle delete room
   const handleDelete = async (id) => {
     console.log("delete room", id);
+    try {
+      await mutateAsync(id);
+    } catch (err) {
+      console.log(err);
+    }
   };
   if (isLoading) return <LoadingSpinner />;
   return (
@@ -96,12 +108,8 @@ const MyListings = () => {
                   {rooms.map((room) => (
                     <RoomDataRow
                       key={room._id}
-                      refetch={refetch}
                       handleDelete={handleDelete}
                       room={room}
-                      isOpen={isOpen}
-                      setIsOpen={setIsOpen}
-                      close={close}
                     />
                   ))}
                 </tbody>

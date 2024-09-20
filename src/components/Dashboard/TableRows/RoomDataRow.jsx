@@ -1,16 +1,14 @@
 import PropTypes from "prop-types";
 import { format } from "date-fns";
-import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useState } from "react";
+import DeleteModal from "../../Modals/DeleteModal";
 
-const RoomDataRow = ({
-  room,
-  refetch,
-  handleDelete,
-  isOpen,
-  setIsOpen,
-  close,
-}) => {
+const RoomDataRow = ({ room, handleDelete }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
   return (
     <tr>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -57,39 +55,12 @@ const RoomDataRow = ({
           <span className="relative">Delete</span>
         </button>
         {/* Delete modal */}
-        <>
-          <Dialog
-            open={isOpen}
-            as="div"
-            className="relative z-0 focus:outline-none text-black"
-            onClose={close}
-          >
-            <div className="fixed inset-0 z-10 w-screen overflow-y-auto ">
-              <div className="flex min-h-full items-center justify-center p-4">
-                <DialogPanel
-                  transition
-                  className="w-full max-w-md rounded-xl bg-gray-200 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
-                >
-                  <DialogTitle as="h3" className="text-base/7 font-medium ">
-                    Payment successful
-                  </DialogTitle>
-                  <p className="mt-2 text-sm/6">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
-                  </p>
-                  <div className="mt-4">
-                    <Button
-                      className="inline-flex items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
-                      onClick={close}
-                    >
-                      Got it, thanks!
-                    </Button>
-                  </div>
-                </DialogPanel>
-              </div>
-            </div>
-          </Dialog>
-        </>
+        <DeleteModal
+          isOpen={isOpen}
+          closeModal={closeModal}
+          handleDelete={handleDelete}
+          id={room?._id}
+        />
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <span className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -107,7 +78,7 @@ const RoomDataRow = ({
 
 RoomDataRow.propTypes = {
   room: PropTypes.object,
-  refetch: PropTypes.func,
+  handleDelete: PropTypes.func,
 };
 
 export default RoomDataRow;
