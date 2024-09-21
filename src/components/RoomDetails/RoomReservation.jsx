@@ -4,14 +4,21 @@ import { useState } from "react";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import { differenceInCalendarDays } from "date-fns";
 const RoomReservation = ({ room }) => {
   const [calender, setCalendar] = useState([
     {
-      startDate: new Date(),
-      endDate: null,
+      startDate: new Date(room.from),
+      endDate: new Date(room.to),
       key: "selection",
     },
   ]);
+
+  const totalDays = parseInt(
+    differenceInCalendarDays(new Date(room.to), new Date(room.from))
+  );
+
+  const totalPrice = (totalDays + 1) * room.price;
 
   return (
     <div className="rounded-xl border-[1px] border-neutral-200 overflow-hidden bg-white">
@@ -24,7 +31,15 @@ const RoomReservation = ({ room }) => {
         <DateRange
           rangeColors={["#F43F5E"]}
           editableDateInputs={true}
-          onChange={(item) => setCalendar([item.selection])}
+          onChange={() =>
+            setCalendar([
+              {
+                startDate: new Date(room.from),
+                endDate: new Date(room.to),
+                key: "selection",
+              },
+            ])
+          }
           moveRangeOnFirstSelection={false}
           ranges={calender}
         />
@@ -36,7 +51,7 @@ const RoomReservation = ({ room }) => {
       <hr />
       <div className="p-4 flex items-center justify-between font-semibold text-lg">
         <div>Total</div>
-        <div>${room?.price}</div>
+        <div>${totalPrice}</div>
       </div>
     </div>
   );
