@@ -12,6 +12,8 @@ import AddRoom from "../pages/Dashboard/Host/AddRoom";
 import MyListings from "../pages/Dashboard/Host/MyListings";
 import Profile from "../pages/Dashboard/Common/Profile";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
+import AdminRoute from "./AdminRoute";
+import HostRoute from "./HostRoute";
 
 export const router = createBrowserRouter([
   {
@@ -37,27 +39,57 @@ export const router = createBrowserRouter([
   { path: "/signup", element: <SignUp /> },
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <privateRoute>
+        <DashboardLayout />
+      </privateRoute>
+    ),
     children: [
       {
         index: true,
-        element: <Statistics />,
+        element: (
+          <privateRoute>
+            <Statistics />
+          </privateRoute>
+        ),
       },
       {
         path: "add-room",
-        element: <AddRoom />,
+        element: (
+          <privateRoute>
+            <HostRoute>
+              <AddRoom />
+            </HostRoute>
+          </privateRoute>
+        ),
       },
       {
         path: "my-listings",
-        element: <MyListings />,
+        element: (
+          <privateRoute>
+            <HostRoute>
+              <MyListings />
+            </HostRoute>
+          </privateRoute>
+        ),
       },
       {
         path: "manage-users",
-        element: <ManageUsers />,
+        element: (
+          <privateRoute>
+            <AdminRoute>
+              <ManageUsers />
+            </AdminRoute>
+          </privateRoute>
+        ),
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <privateRoute>
+            <Profile />
+          </privateRoute>
+        ),
       },
     ],
   },
