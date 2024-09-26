@@ -3,7 +3,7 @@ import { GrLogout } from "react-icons/gr";
 import { FcSettings } from "react-icons/fc";
 import { AiOutlineBars } from "react-icons/ai";
 import { BsGraphUp } from "react-icons/bs";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import useRole from "../../../hooks/useRole";
@@ -11,15 +11,31 @@ import MenuItem from "./Menu/MenuItem";
 import HostMenu from "./Menu/HostMenu";
 import GuestMenu from "./Menu/GuestMenu";
 import AdminMenu from "./Menu/AdminMenu";
+import ToggleBtn from "../../Shared/Button/ToggleBtn";
+import toast from "react-hot-toast";
 
 const Sidebar = () => {
   const { logOut } = useAuth();
   const [isActive, setActive] = useState(false);
+  const [toggleRole, setToggleRole] = useState(true);
   const [role] = useRole();
+  const navigae = useNavigate();
 
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive);
+  };
+
+  // Toggle Role Handler
+  const handleToggleRole = () => {
+    setToggleRole(!toggleRole);
+  };
+
+  // handle logout
+  const handleLogout = async () => {
+    await logOut();
+    toast.success("Logged out successfully");
+    navigae("/");
   };
   return (
     <>
@@ -71,7 +87,12 @@ const Sidebar = () => {
           {/* Nav Items */}
           <div className="flex flex-col justify-between flex-1 mt-6">
             {/* Conditional toggle button here.. */}
-
+            {role === "Host" && (
+              <ToggleBtn
+                toggleRole={toggleRole}
+                handleToggleRole={handleToggleRole}
+              />
+            )}
             {/*  Menu Items */}
             <nav>
               {/* Statistics */}
@@ -81,7 +102,13 @@ const Sidebar = () => {
                 icon={BsGraphUp}
               />
               {role === "Guest" && <GuestMenu />}
-              {role === "Host" && <HostMenu />}
+              {role === "Host" ? (
+                toggleRole ? (
+                  <HostMenu />
+                ) : (
+                  <GuestMenu />
+                )
+              ) : undefined}
               {role === "Admin" && <AdminMenu />}
             </nav>
           </div>
@@ -104,7 +131,7 @@ const Sidebar = () => {
             <span className="mx-4 font-medium">Profile</span>
           </NavLink>
           <button
-            onClick={logOut}
+            onClick={handleLogout}
             className="flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300   hover:text-gray-700 transition-colors duration-300 transform"
           >
             <GrLogout className="w-5 h-5" />
