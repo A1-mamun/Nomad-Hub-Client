@@ -31,10 +31,7 @@ const UserDataRow = ({ user, refetch }) => {
       setIsOpen(false);
       return;
     }
-    if (user?.status === "Verified") {
-      setIsOpen(false);
-      return toast.error("User don't want to change the role");
-    }
+
     const userData = {
       role: selected,
       status: "Verified",
