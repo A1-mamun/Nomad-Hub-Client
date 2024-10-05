@@ -3,6 +3,7 @@ import "./CheckOutForm.css";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { ImSpinner6 } from "react-icons/im";
 
 const CheckOutForm = ({ closeModal, bookingInfo }) => {
   const stripe = useStripe();
@@ -26,7 +27,6 @@ const CheckOutForm = ({ closeModal, bookingInfo }) => {
     setClientSecret(data.clientSecret);
   };
 
-  console.log("clientSecret", clientSecret);
   const handleSubmit = async (event) => {
     // Block native form submission.
     event.preventDefault();
@@ -73,6 +73,8 @@ const CheckOutForm = ({ closeModal, bookingInfo }) => {
           },
         },
       });
+
+    // handle error
     if (confirmError) {
       console.log("[confirmError]", confirmError);
       setCardError(confirmError.message);
@@ -81,10 +83,18 @@ const CheckOutForm = ({ closeModal, bookingInfo }) => {
     }
 
     // payment succeed
-
     if (paymentIntent.status === "succeeded") {
+      // create payment info object
+      console.log(paymentIntent);
+      const paymentInfo = {
+        ...bookingInfo,
+        transactionId: paymentIntent.id,
+        date: new Date(),
+      };
+      console.log(paymentInfo);
+      // save payment info to the database
+
       setProcessing(false);
-      alert("Payment succeeded");
     }
   };
 
@@ -107,7 +117,7 @@ const CheckOutForm = ({ closeModal, bookingInfo }) => {
             },
           }}
         />
-
+        {cardError && <p className="text-red-500">{cardError}</p>}
         <div className="flex mt-2 justify-around">
           <button
             onClick={closeModal}
@@ -120,13 +130,16 @@ const CheckOutForm = ({ closeModal, bookingInfo }) => {
             disabled={!stripe || !clientSecret || processing}
             type="submit"
             className="inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
-            onClick={closeModal}
+            onClick={handleSubmit}
           >
-            Pay ${bookingInfo.price}
+            {processing ? (
+              <ImSpinner6 className="animate-spin mx-auto" />
+            ) : (
+              `Pay ${bookingInfo.price}`
+            )}
           </button>
         </div>
       </form>
-      {cardError && <p className="text-red-500">{cardError}</p>}
     </>
   );
 };
