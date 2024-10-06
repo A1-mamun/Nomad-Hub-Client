@@ -4,8 +4,11 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { ImSpinner6 } from "react-icons/im";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const CheckOutForm = ({ closeModal, bookingInfo }) => {
+const CheckOutForm = ({ closeModal, bookingInfo, refetch }) => {
+  const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
@@ -88,13 +91,24 @@ const CheckOutForm = ({ closeModal, bookingInfo }) => {
       console.log(paymentIntent);
       const paymentInfo = {
         ...bookingInfo,
+        roomId: bookingInfo._id,
         transactionId: paymentIntent.id,
         date: new Date(),
       };
-      console.log(paymentInfo);
+      delete paymentInfo._id;
       // save payment info to the database
-
-      setProcessing(false);
+      try {
+        await axiosSecure.post("/booking", paymentInfo);
+        refetch();
+        setProcessing(false);
+        closeModal();
+        toast.success("Payment & Booking successful");
+        navigate("/dashboard/my-bookings");
+      } catch (err) {
+        toast.error(err.message);
+        setProcessing(false);
+        console.log(err.message);
+      }
     }
   };
 
@@ -147,6 +161,7 @@ const CheckOutForm = ({ closeModal, bookingInfo }) => {
 CheckOutForm.propTypes = {
   closeModal: PropTypes.func,
   bookingInfo: PropTypes.object,
+  refetch: PropTypes.func,
 };
 
 export default CheckOutForm;
