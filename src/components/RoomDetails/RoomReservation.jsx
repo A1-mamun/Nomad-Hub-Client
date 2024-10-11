@@ -55,9 +55,9 @@ const RoomReservation = ({ room, refetch }) => {
       <hr />
       <div className="p-4">
         <Button
-          disabled={room?.booked === true}
+          disabled={room?.booked}
           onClick={() => setIsOpen(true)}
-          label={"Reserve"}
+          label={room?.booked ? "Booked" : "Reserve"}
         />
       </div>
       {/* modal */}
@@ -68,7 +68,11 @@ const RoomReservation = ({ room, refetch }) => {
         bookingInfo={{
           ...room,
           price: totalPrice,
-          guest: { name: user?.displayName, email: user?.email },
+          guest: {
+            name: user?.displayName,
+            email: user?.email,
+            image: user?.photoURL,
+          },
         }}
       />
       <hr />

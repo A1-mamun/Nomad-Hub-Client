@@ -38,11 +38,10 @@ const MyListings = () => {
 
   // handle delete room
   const handleDelete = async (id) => {
-    console.log("delete room", id);
     try {
       await mutateAsync(id);
     } catch (err) {
-      console.log(err);
+      toast.error(err.message);
     }
   };
   if (isLoading) return <LoadingSpinner />;

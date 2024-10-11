@@ -1,6 +1,29 @@
 import { Helmet } from "react-helmet-async";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
 
 const ManageBookings = () => {
+  // fetch all the hosted room for host
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+
+  // fetch booking rooms data
+  const {
+    data: hostedRooms = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["hosted-rooms", user?.email],
+    queryFn: async () => {
+      const { data } = await axiosSecure.get(`/hosted-rooms/${user?.email}`);
+      console.log("data", data);
+      return data;
+    },
+  });
+
+  if (isLoading) return <LoadingSpinner />;
   return (
     <>
       <Helmet>

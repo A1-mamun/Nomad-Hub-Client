@@ -96,9 +96,15 @@ const CheckOutForm = ({ closeModal, bookingInfo, refetch }) => {
         date: new Date(),
       };
       delete paymentInfo._id;
-      // save payment info to the database
+
       try {
+        // save payment info to the database
         await axiosSecure.post("/booking", paymentInfo);
+
+        // change room status to booked in db
+        await axiosSecure.patch(`/room/status/${bookingInfo._id}`, {
+          status: true,
+        });
         refetch();
         setProcessing(false);
         closeModal();
