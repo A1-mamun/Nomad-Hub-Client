@@ -3,6 +3,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
+import BookingDataRow from "../../../components/Dashboard/TableRows/BookingDataRow";
 
 const ManageBookings = () => {
   // fetch all the hosted room for host
@@ -75,7 +76,18 @@ const ManageBookings = () => {
                     </th>
                   </tr>
                 </thead>
-                <tbody>{/* Table row data */}</tbody>
+                <tbody>
+                  {
+                    // map through all the bookings
+                    hostedRooms.map((hostedRoom) => (
+                      <BookingDataRow
+                        key={hostedRoom._id}
+                        booking={hostedRoom}
+                        refetch={refetch}
+                      />
+                    ))
+                  }
+                </tbody>
               </table>
             </div>
           </div>
