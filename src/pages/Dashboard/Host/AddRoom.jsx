@@ -39,10 +39,6 @@ const AddRoom = () => {
       toast.success("Room added successfully!");
       navigate("/dashboard/my-listings");
     },
-    // onError: (error) => {
-    //   console.log(error.message);
-    //   setLoading(false);
-    // },
   });
 
   // Form submit handler
@@ -90,7 +86,7 @@ const AddRoom = () => {
       toast.error(err.message);
     }
   };
-
+  // handle preview image
   const handlePreviewImage = (image) => {
     setImagePreview(URL.createObjectURL(image));
     setImageText(image.name);

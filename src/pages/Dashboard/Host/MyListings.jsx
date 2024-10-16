@@ -109,6 +109,7 @@ const MyListings = () => {
                       key={room._id}
                       handleDelete={handleDelete}
                       room={room}
+                      refetch={refetch}
                     />
                   ))}
                 </tbody>
