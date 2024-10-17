@@ -3,6 +3,7 @@ import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { ImSpinner6 } from "react-icons/im";
+import PropTypes from "prop-types";
 const AddRoomForm = ({
   dates,
   handleDates,
@@ -58,6 +59,7 @@ const AddRoomForm = ({
                 editableDateInputs={true}
                 onChange={(item) => handleDates(item)}
                 moveRangeOnFirstSelection={false}
+                minDate={new Date()}
                 ranges={[dates]}
               />
             </div>
@@ -200,4 +202,13 @@ const AddRoomForm = ({
   );
 };
 
+AddRoomForm.propTypes = {
+  dates: PropTypes.object,
+  handleDates: PropTypes.func,
+  handleSubmit: PropTypes.func,
+  imagePreview: PropTypes.string,
+  imageText: PropTypes.string,
+  handlePreviewImage: PropTypes.func,
+  loading: PropTypes.bool,
+};
 export default AddRoomForm;

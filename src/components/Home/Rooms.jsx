@@ -8,7 +8,7 @@ import { useSearchParams } from "react-router-dom";
 
 const Rooms = () => {
   const axiosCommon = useAxiosCommon();
-  const [params, setParams] = useSearchParams();
+  const [params] = useSearchParams();
   const category = params.get("category");
 
   // console.log(category);

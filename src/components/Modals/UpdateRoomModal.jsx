@@ -1,4 +1,4 @@
-import PropTypes, { object } from "prop-types";
+import PropTypes from "prop-types";
 import {
   Dialog,
   Transition,
@@ -13,11 +13,8 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { imageUpload } from "../../api/utils";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import { set } from "date-fns";
 
 const UpdateRoomModal = ({ setIsOpen, isOpen, room, refetch }) => {
-  const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const [loading, setLoading] = useState(false);
   const [roomData, setRoomData] = useState(room);

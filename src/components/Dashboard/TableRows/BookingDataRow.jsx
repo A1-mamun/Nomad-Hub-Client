@@ -79,12 +79,12 @@ const BookingDataRow = ({ booking, refetch }) => {
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 whitespace-no-wrap">
-          {format(new Date(booking?.from), "P")}
+          {format(new Date(booking?.from), "PP")}
         </p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 whitespace-no-wrap">
-          {format(new Date(booking?.to), "P")}
+          {format(new Date(booking?.to), "PP")}
         </p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">

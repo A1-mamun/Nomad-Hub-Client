@@ -82,6 +82,7 @@ const UpdateRoomForm = ({
                 editableDateInputs={true}
                 onChange={(item) => handleDates(item)}
                 moveRangeOnFirstSelection={false}
+                minDate={new Date()}
                 ranges={[dates]}
               />
             </div>
@@ -201,6 +202,7 @@ const UpdateRoomForm = ({
         </div>
 
         <button
+          disabled={loading}
           type="submit"
           className="w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500"
         >
