@@ -45,14 +45,8 @@ const Navbar = () => {
         <Container>
           <div className="flex flex-row  items-center justify-between gap-3 md:gap-0">
             {/* Logo */}
-            <Link to="/">
-              <img
-                // className='hidden md:block'
-                src="https://i.ibb.co/4ZXzmq5/logo.png"
-                alt="logo"
-                width="100"
-                height="100"
-              />
+            <Link to="/" className="text-4xl text-rose-500 font-bold">
+              Nomad-Hub
             </Link>
             {/* Dropdown Menu */}
             <div className="relative">
