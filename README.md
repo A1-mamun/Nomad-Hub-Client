@@ -22,7 +22,7 @@ Install dependencies
   npm install
 ```
 
-Create a `.env` file in your root directory and add the following to connect with mongoDB
+Create a `.env.local` file in your root directory and add the following to connect
 
 ```bash
 VITE_apiKey=                  # Firebase API key for authentication and database access
